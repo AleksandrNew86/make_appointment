@@ -1,0 +1,14 @@
+{% extends 'appointment/default.html' %}
+{% block content %}
+<h1>Make an appointment</h1>
+<form method="post"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Your name</label>
+    <input type="text" name="client_name"><br>
+    <label>Your problem</label>
+    <input type="text" name="message"><br>
+    <label>Date</label>
+    <input type="date" name="date"><br>
+    <input type="submit">
+</form>
+{% endblock content %}
