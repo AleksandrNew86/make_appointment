@@ -12,6 +12,106 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style': '{',
+    'formatters': {
+        'con_debug': {
+            'format': '{asctime} {levelname} {message}'
+        },
+        'con_warning': {
+            'format': '{asctime} {levelname} {message} {pathname}'
+        },
+        'con_error': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+        },
+        'file_general': {
+            'format': '{asctime} {levelname} {module} {message}',
+        },
+        'file_errors': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+        },
+        'file_security': {
+            'format': '{asctime} {levelname} {module} {message}',
+        },
+        'mail': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+        },
+    },
+
+
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+
+
+    'handlers': {
+        'console_debug': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'con_debug'
+        },
+        'console_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'con_warning'
+        },
+        'console_error': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'con_error'
+        },
+        'file_general': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'formatter': 'file_general',
+            'filename': 'logs/general.log'
+        },
+        'file_errors': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'formatter': 'file_errors',
+            'filename': 'logs/errors.log'
+        },
+        'file_security': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'formatter': 'file_security',
+            'filename': 'logs/errors.log'
+        },
+
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        }
+    }
+}
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
